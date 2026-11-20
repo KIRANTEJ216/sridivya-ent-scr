@@ -1,0 +1,739 @@
+@import "tailwindcss";
+@import "./lib/scrollcraft/scrollcraft.css";
+@import "./components/line/flight.css";
+@import "./components/line/home.css";
+
+@theme inline {
+  --color-kraft: oklch(0.68 0.09 75);
+  --color-kraft-deep: oklch(0.55 0.09 72);
+  --color-tan: oklch(0.79 0.06 80);
+  --color-recycled: oklch(0.9 0.03 85);
+  --color-matte-board: oklch(0.82 0.045 78);
+  --color-steel: oklch(0.45 0.015 250);
+  --color-steel-deep: oklch(0.3 0.02 255);
+  --color-chrome: oklch(0.87 0.02 260);
+  --color-ink: oklch(0.19 0.015 260);
+  --color-ink-deep: oklch(0.145 0.014 260);
+  --color-cyan-print: oklch(0.78 0.13 220);
+  --color-orange-print: oklch(0.71 0.17 55);
+
+  --color-surface: var(--color-ink);
+  --color-surface-2: oklch(0.23 0.016 260);
+  --color-line: oklch(0.32 0.018 258 / 0.6);
+  --color-text: oklch(0.95 0.01 85);
+  --color-text-muted: oklch(0.72 0.02 82);
+  --color-text-dim: oklch(0.66 0.022 82);
+
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --shadow-depth: 0 1px 2px oklch(0 0 0 / 0.3), 0 6px 16px -4px oklch(0 0 0 / 0.35), 0 24px 48px -12px oklch(0 0 0 / 0.4);
+  --shadow-depth-sm: 0 1px 2px oklch(0 0 0 / 0.28), 0 4px 12px -2px oklch(0 0 0 / 0.3);
+
+  /* Motion tokens — shared easing language */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 150ms;
+  --dur-base: 240ms;
+  --dur-slow: 420ms;
+  --dur-slower: 700ms;
+}
+
+/* ---------- base ---------- */
+@layer components {
+
+html {
+  /* scroll-behavior: smooth intentionally omitted — Lenis controls all scroll */
+}
+body {
+  background:
+    radial-gradient(120% 80% at 50% -10%, oklch(0.22 0.018 260 / 0.45), transparent 55%),
+    var(--color-ink-deep);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+  min-height: 100svh;
+}
+::selection {
+  background: var(--color-orange-print);
+  color: var(--color-ink-deep);
+}
+:focus-visible {
+  outline: 2px solid var(--color-orange-print);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- brand utilities ---------- */
+.chrome-panel {
+  position: relative;
+  background: linear-gradient(
+    100deg,
+    oklch(0.32 0.018 255) 0%,
+    oklch(0.42 0.02 258) 18%,
+    oklch(0.24 0.016 256) 38%,
+    oklch(0.47 0.022 260) 55%,
+    oklch(0.26 0.017 257) 74%,
+    oklch(0.36 0.019 257) 100%
+  );
+  border: 1px solid oklch(0.65 0.03 262 / 0.35);
+}
+.chrome-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    115deg,
+    oklch(0.85 0.04 265 / 0.7),
+    oklch(0.85 0.04 265 / 0) 28%,
+    oklch(0.85 0.04 265 / 0) 62%,
+    oklch(0.85 0.04 265 / 0.55)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.metal-panel {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      oklch(0.36 0.016 256 / 0.25) 0 1px,
+      transparent 1px 3px
+    ),
+    linear-gradient(180deg, oklch(0.27 0.017 257), oklch(0.22 0.015 256));
+  border: 1px solid oklch(0.38 0.02 258 / 0.55);
+}
+.flute {
+  background-image: repeating-linear-gradient(
+    90deg,
+    oklch(0 0 0 / 0.16) 0 1.5px,
+    transparent 1.5px 5px
+  );
+}
+.corrugated-texture {
+  background-image:
+    radial-gradient(110% 90% at 18% 6%, oklch(0.92 0.03 82 / 0.55), transparent 46%),
+    radial-gradient(80% 70% at 85% 12%, oklch(0.95 0.02 86 / 0.4), transparent 40%),
+    radial-gradient(120% 130% at 55% 110%, oklch(0.5 0.07 70 / 0.38), transparent 55%),
+    linear-gradient(176deg, oklch(0.76 0.075 76), oklch(0.65 0.08 74) 55%, oklch(0.58 0.085 73));
+}
+.emboss {
+  text-shadow:
+    0 1px 0 oklch(1 0 0 / 0.28),
+    0 -1px 1px oklch(0 0 0 / 0.45);
+}
+.deboss {
+  text-shadow:
+    0 1px 0 oklch(0.4 0.06 74 / 0.55),
+    0 2px 3px oklch(0 0 0 / 0.5);
+}
+.foil-stamp {
+  background: linear-gradient(
+    100deg,
+    oklch(0.75 0.11 85),
+    oklch(0.9 0.06 95) 30%,
+    oklch(0.62 0.14 50) 52%,
+    oklch(0.88 0.05 100) 72%,
+    oklch(0.72 0.1 60)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.shadow-depth {
+  box-shadow: var(--shadow-depth);
+}
+.industrial-grid {
+  background-image:
+    linear-gradient(oklch(0.65 0.03 262 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.65 0.03 262 / 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* ---------- 3D box faces ---------- */
+/* corrugated edge: flute stripes run along the cut edge — enhanced */
+
+/* flaps: hinged at the top rim, four sides.
+   --flap-x / --flap-z place the hinge on the rim;
+   flap stands vertical, then folds outward with --open.
+   Side flaps first rotate to their rim plane via --flap-rot-y. */
+/* flaps: hinged at the top rim, four sides.
+   --flap-x / --flap-z place the hinge on the rim;
+   flap stands vertical, then folds outward with --open.
+   Side flaps first rotate to their rim plane via --flap-rot-y. */
+
+/* ---------- brand face (Sri Divya Enterprises wordmark) ---------- */
+
+/* ---------- catalogue grid ---------- */
+/* The carton must letterbox into whatever box it is given, never dictate the
+   box. `h-full` + `w-full` fights the viewBox aspect ratio inside a centred
+   grid item, which pushed the carton outside the card on narrow viewports;
+   letting the intrinsic viewBox size govern, then capping it, is what fits. */
+.fc {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+@media (min-width: 768px) {
+  .showcase[data-lane="right"] .showcase-visual {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+.showcase-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: clamp(340px, 46vh, 520px);
+  touch-action: pan-y;
+  transform: translateY(var(--parallax-y)) scale(var(--scroll-scale));
+  will-change: transform;
+}
+.spec-table {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1px;
+  background: oklch(0.32 0.018 258 / 0.5);
+  border: 1px solid oklch(0.32 0.018 258 / 0.5);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+.spec-table > div {
+  background: oklch(0.24 0.016 259);
+  padding: 0.7rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+.spec-table dt {
+  color: var(--color-text-dim);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.spec-table dd {
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+.spec-table dd a {
+  text-decoration: underline;
+  text-decoration-color: oklch(0.65 0.03 262 / 0.4);
+  text-underline-offset: 3px;
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  --btn-shadow: 0 0 0 transparent;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.75rem;
+  padding: 0 1.25rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
+  will-change: transform;
+}
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, oklch(1 0 0 / 0.08), transparent 50%);
+  opacity: 0.7;
+  mix-blend-mode: overlay;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--color-orange-print);
+  outline-offset: 3px;
+}
+.btn:active {
+  transform: translateY(1px) scale(0.98);
+  transition-duration: 60ms;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, oklch(0.76 0.16 55), oklch(0.68 0.17 55));
+  color: oklch(0.16 0.02 55);
+  box-shadow:
+    0 1px 0 oklch(1 0 0 / 0.25) inset,
+    0 8px 24px -8px oklch(0.71 0.17 55 / 0.55),
+    0 2px 6px -2px oklch(0.71 0.17 55 / 0.4);
+  border: 1px solid oklch(0.62 0.16 52);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 1px 0 oklch(1 0 0 / 0.3) inset,
+    0 16px 36px -8px oklch(0.71 0.17 55 / 0.65),
+    0 4px 10px -2px oklch(0.71 0.17 55 / 0.45);
+  background: linear-gradient(180deg, oklch(0.79 0.15 55), oklch(0.71 0.17 55));
+}
+.btn-primary::after {
+  background: linear-gradient(180deg, oklch(1 0 0 / 0.18), transparent 40%);
+}
+
+.btn-steel {
+  background: linear-gradient(180deg, oklch(0.32 0.018 257), oklch(0.28 0.018 257));
+  border: 1px solid oklch(0.5 0.025 260 / 0.5);
+  color: var(--color-text);
+}
+.btn-steel:hover {
+  border-color: oklch(0.72 0.03 262 / 0.8);
+  background: linear-gradient(180deg, oklch(0.36 0.02 257), oklch(0.31 0.02 257));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -8px oklch(0.5 0.025 260 / 0.4);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.75rem;
+  padding: 0 1.25rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
+  background: oklch(1 0 0 / 0.02);
+  border: 1px solid var(--color-line);
+  color: var(--color-text-muted);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.btn-ghost:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-orange-print);
+  color: var(--color-text);
+  background: oklch(0.71 0.17 55 / 0.08);
+  box-shadow: 0 6px 18px -6px oklch(0.71 0.17 55 / 0.25);
+}
+.btn-ghost:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ---------- header ---------- */
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  transform: translateY(0);
+  transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+.site-header[data-scrolled] {
+  background: oklch(0.16 0.015 260 / 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom-color: oklch(0.32 0.018 258 / 0.5);
+  contain: layout style;
+}
+.site-header[data-hidden] {
+  transform: translateY(-100%);
+}
+/* At scroll 0 the header deliberately floats with no bar behind it, so its type
+   sits straight on the flight footage. The factory skylights blow out to near
+   white, which swallowed the active link. The shadow carries the contrast so it
+   no longer depends on which frame happens to be behind the header; once
+   [data-scrolled] supplies a solid backdrop the shadow is dropped again. */
+.site-header .nav-link,
+.site-header .font-display,
+.site-header .text-text-dim {
+  text-shadow:
+    0 1px 2px oklch(0.13 0.014 260 / 0.9),
+    0 0 16px oklch(0.13 0.014 260 / 0.75);
+}
+.site-header[data-scrolled] .nav-link,
+.site-header[data-scrolled] .font-display,
+.site-header[data-scrolled] .text-text-dim {
+  text-shadow: none;
+}
+.nav-link {
+  position: relative;
+  padding: 0.5rem 0.15rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: color 0.18s ease;
+}
+.nav-link:hover,
+.nav-link[aria-current="page"] {
+  color: var(--color-text);
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-orange-print);
+  transition: right 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.nav-link:hover::after,
+.nav-link[aria-current="page"]::after {
+  right: 0;
+}
+
+/* ---------- forms ---------- */
+.field-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  margin-bottom: 0.45rem;
+}
+.field-input {
+  width: 100%;
+  height: 2.75rem;
+  padding: 0 0.9rem;
+  border-radius: 10px;
+  border: 1px solid oklch(0.38 0.02 258 / 0.6);
+  background: oklch(0.22 0.015 258);
+  color: var(--color-text);
+  font-size: 0.92rem;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.field-input:focus {
+  outline: none;
+  border-color: var(--color-orange-print);
+  box-shadow: 0 0 0 3px oklch(0.71 0.17 55 / 0.18);
+}
+.field-input::placeholder {
+  color: var(--color-text-dim);
+}
+textarea.field-input {
+  height: auto;
+  min-height: 7rem;
+  padding: 0.75rem 0.9rem;
+  resize: vertical;
+}
+select.field-input {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--color-text-dim) 50%), linear-gradient(135deg, var(--color-text-dim) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-orange-print) 0 var(--range-fill, 50%), oklch(0.32 0.018 258) var(--range-fill, 50%) 100%);
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-text);
+  border: 3px solid var(--color-orange-print);
+  box-shadow: 0 2px 8px oklch(0 0 0 / 0.4);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--var-text, #fff);
+  border: 3px solid var(--color-orange-print);
+}
+
+/* ---------- misc ---------- */
+.divider-flute {
+  height: 10px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    oklch(0.4 0.03 260 / 0.5) 0 2px,
+    transparent 2px 7px
+  );
+}
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+.card-hover {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-depth);
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* GPU promotion for scroll-animated elements */
+[data-reveal] {
+  will-change: transform, opacity;
+}
+
+/* ---------- Fade-in animation ---------- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Showcase enhanced ---------- */
+.showcase-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: clamp(340px, 46vh, 520px);
+  touch-action: pan-y;
+  transform: translateY(var(--parallax-y)) scale(var(--scroll-scale));
+  will-change: transform;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid oklch(0.38 0.02 258 / 0.45);
+  background:
+    radial-gradient(70% 55% at 50% 42%, oklch(0.28 0.025 260 / 0.7), transparent 75%),
+    linear-gradient(180deg, oklch(0.23 0.017 258), oklch(0.19 0.015 258));
+}
+
+/* ---------- Premium typography ---------- */
+.font-display {
+  font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes scroll-cue {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+
+/* ---------- 3D canvas container premium styling ---------- */
+
+/* ---------- Kraft particle animation ---------- */
+@keyframes floatKraft {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(20px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ==============================
+   Section polish — buttons, chips, inputs
+   ============================== */
+
+/* Chip / pill base — used for category tags, kbd hints, etc. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-line);
+  background: oklch(0.24 0.018 258 / 0.7);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  width: fit-content;
+  transition: border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+}
+.chip:hover {
+  border-color: var(--color-orange-print);
+  color: var(--color-text);
+}
+
+/* Range slider — bigger thumb, better contrast */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--color-orange-print) 0 var(--range-fill, 50%),
+    oklch(0.32 0.018 258 / 0.7) var(--range-fill, 50%) 100%
+  );
+  cursor: pointer;
+  transition: filter var(--dur-base) var(--ease-out);
+}
+input[type="range"]:hover {
+  filter: brightness(1.1);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, oklch(0.97 0.01 85), oklch(0.85 0.02 80));
+  border: 2px solid var(--color-orange-print);
+  box-shadow: 0 2px 6px oklch(0 0 0 / 0.5), 0 0 0 4px oklch(0.71 0.17 55 / 0.15);
+  cursor: grab;
+  transition: transform var(--dur-fast) var(--ease-spring), box-shadow var(--dur-base) var(--ease-out);
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 8px oklch(0 0 0 / 0.5), 0 0 0 6px oklch(0.71 0.17 55 / 0.25);
+}
+input[type="range"]::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.1);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, oklch(0.97 0.01 85), oklch(0.85 0.02 80));
+  border: 2px solid var(--color-orange-print);
+  box-shadow: 0 2px 6px oklch(0 0 0 / 0.5);
+  cursor: grab;
+}
+input[type="range"]::-moz-range-track {
+  background: transparent;
+  border: 0;
+}
+
+/* Text balance utility (Tailwind has it but we need explicit fallback) */
+.balance { text-wrap: balance; }
+.pretty { text-wrap: pretty; }
+
+/* ==============================
+   Mobile menu (animated sheet)
+   ============================== */
+.mobile-nav-anim {
+  animation: mobile-sheet-in 0.32s var(--ease-out-soft) both;
+  transform-origin: top center;
+}
+@keyframes mobile-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scaleY(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+.mobile-nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  transition:
+    color var(--dur-base) var(--ease-out),
+    background var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+.mobile-nav-link:hover,
+.mobile-nav-link[aria-current="page"] {
+  color: var(--color-text);
+  background: oklch(0.24 0.016 259);
+  border-color: oklch(0.32 0.018 258 / 0.5);
+}
+.mobile-nav-link:active {
+  transform: scale(0.98);
+}
+.mobile-nav-link::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: oklch(0.32 0.018 258);
+  transition: background var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+.mobile-nav-link:hover::before,
+.mobile-nav-link[aria-current="page"]::before {
+  background: var(--color-orange-print);
+  box-shadow: 0 0 8px oklch(0.71 0.17 55 / 0.5);
+}
+
+/* Header brand mark — gentle float on hover */
+.brand-mark {
+  transition: transform var(--dur-base) var(--ease-spring);
+}
+.brand-mark:hover {
+  transform: rotate(-4deg) scale(1.05);
+}
+
+/* End of @layer components. Everything above this line is a project class, not a
+   reset, and must be able to lose to a Tailwind utility such as `hidden` or
+   `md:flex`. Unlayered rules outrank every layered rule at equal specificity,
+   which is why `.btn` used to defeat `md:hidden`. */
+}

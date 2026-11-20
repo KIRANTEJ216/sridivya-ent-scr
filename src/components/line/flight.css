@@ -1,0 +1,310 @@
+/* ============================================================================
+   The Line — homepage worldflight
+   ============================================================================ */
+
+@layer components {
+
+.sde-flight {
+  position: relative;
+  background: var(--color-ink-deep, #0b0e13);
+}
+
+/* --- copy ---------------------------------------------------------------- */
+/* Anchors alternate lead/trail so the eye is never parked in one corner
+   twice across seven legs. */
+.sde-copy {
+  position: absolute;
+  max-width: 34rem;
+  padding: 0 clamp(1rem, 5vw, 4.5rem);
+}
+
+/* The factory footage swings from near-black steel to blown-out skylight
+   between legs, so the fixed chrome carries its own scrim instead of trusting
+   the frame behind it. Unlayered, so it wins over the engine's @layer rules. */
+.sde-flight [data-sc-world]::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: clamp(6rem, 16vh, 9.5rem);
+  pointer-events: none;
+  z-index: 5;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--sc-canvas) 94%, transparent) 0%,
+    color-mix(in oklab, var(--sc-canvas) 88%, transparent) 22%,
+    color-mix(in oklab, var(--sc-canvas) 52%, transparent) 55%,
+    transparent 100%
+  );
+}
+
+.sde-copy.sde-hero,
+.sde-copy.sc-copy--lead {
+  left: 0;
+  bottom: clamp(5rem, 16vh, 9rem);
+  text-align: left;
+}
+
+.sde-copy.sc-copy--trail {
+  right: 0;
+  top: clamp(4rem, 12vh, 7rem);
+  text-align: left;
+}
+
+.sde-finale {
+  max-width: 38rem;
+}
+
+.sde-kicker {
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-orange-print, #ef7f16);
+  margin-bottom: 0.9rem;
+}
+
+.sde-h1 {
+  font-family: var(--font-space-grotesk, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 1.2rem + 5.2vw, 5rem);
+  line-height: 0.97;
+  letter-spacing: -0.035em;
+  color: var(--color-text, #f1eee7);
+  text-wrap: balance;
+}
+
+.sde-h2 {
+  font-family: var(--font-space-grotesk, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 1rem + 3.4vw, 3.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--color-text, #f1eee7);
+  text-wrap: balance;
+}
+
+.sde-h2--xl {
+  font-size: clamp(2.2rem, 1.1rem + 4.4vw, 4rem);
+}
+
+.sde-body {
+  margin-top: 1rem;
+  max-width: 32rem;
+  font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.075rem);
+  line-height: 1.65;
+  color: var(--color-text-muted, #aba497);
+  text-wrap: pretty;
+}
+
+.sde-spec {
+  margin-top: 1.1rem;
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: var(--color-cyan-print, #36caf1);
+}
+
+.sde-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+/* --- the line rail: the nav is a map -------------------------------------- */
+.line-rail {
+  position: fixed;
+  z-index: 60;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.85rem clamp(1rem, 5vw, 4.5rem) calc(0.85rem + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: linear-gradient(to top, oklch(0.13 0.014 260 / 0.92), transparent);
+  pointer-events: none;
+}
+
+.line-rail__track {
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  pointer-events: auto;
+}
+
+.line-rail__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 4px;
+  height: 1px;
+  background: oklch(0.4 0.015 258 / 0.55);
+}
+
+/* the marker travels the schematic as the flight advances */
+.line-rail__marker {
+  position: absolute;
+  top: 0;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 9999px;
+  background: var(--color-orange-print, #ef7f16);
+  box-shadow: 0 0 0 3px oklch(0.71 0.17 55 / 0.18);
+  transition: left 420ms var(--sc-ease-out, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.line-rail__stop { position: relative; }
+
+.line-rail__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: 0;
+  padding: 0 0.25rem;
+  cursor: pointer;
+  color: var(--color-text-dim, #999183);
+  transition: color 200ms ease;
+}
+
+.line-rail__btn:hover { color: var(--color-text, #f1eee7); }
+.line-rail__btn:focus-visible {
+  outline: 2px solid var(--color-orange-print, #ef7f16);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.line-rail__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  background: oklch(0.32 0.018 258);
+  border: 1px solid oklch(0.45 0.015 250);
+  transition: background 220ms ease, transform 220ms ease;
+}
+
+.line-rail__btn[aria-current="step"] { color: var(--color-text, #f1eee7); }
+.line-rail__btn[aria-current="step"] .line-rail__dot {
+  background: var(--color-orange-print, #ef7f16);
+  border-color: var(--color-orange-print, #ef7f16);
+  transform: scale(1.25);
+}
+
+.line-rail__label {
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.line-rail__now {
+  display: none;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--color-text-dim, #999183);
+  pointer-events: auto;
+}
+
+.line-rail__idx { color: var(--color-orange-print, #ef7f16); }
+.line-rail__full { color: var(--color-text-muted, #aba497); text-transform: uppercase; }
+
+/* --- signature move: the dieline draws itself ---------------------------- */
+.sde-dieline {
+  position: absolute;
+  right: clamp(1rem, 5vw, 4.5rem);
+  bottom: clamp(5rem, 14vh, 8rem);
+  width: min(30vw, 20rem);
+  color: var(--color-cyan-print, #36caf1);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.sde-dieline[data-ready="true"] { opacity: 1; }
+
+.sde-dieline svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 6px 18px oklch(0 0 0 / 0.5));
+}
+
+.sde-dieline-caption {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.75rem 0 0;
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-dim, #999183);
+}
+
+/* --- finale NAP -----------------------------------------------------------
+   The homepage has no footer (a footer in document flow would end the scroll
+   track early), so the contact block a local search needs sits in the finale,
+   inside the fixed stage. */
+.sde-nap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+  margin-top: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-text-dim, #999183);
+}
+.sde-nap a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid oklch(0.68 0.09 75 / 0.45);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.sde-nap a:hover,
+.sde-nap a:focus-visible {
+  color: var(--color-kraft, #d9a441);
+  border-color: currentColor;
+}
+
+/* --- responsive ----------------------------------------------------------- */
+@media (max-width: 900px) {
+  .sde-copy { max-width: none; right: 0; }
+  .sde-copy.sc-copy--trail { top: auto; bottom: clamp(7rem, 20vh, 10rem); }
+  .sde-copy.sde-hero,
+  .sde-copy.sc-copy--lead { bottom: clamp(7rem, 22vh, 11rem); }
+  .sde-dieline { width: 9.5rem; right: 1rem; bottom: clamp(0.5rem, 2vh, 1.5rem); opacity: 0.55; }
+  .line-rail__label { display: none; }
+  .line-rail__now { display: flex; }
+  .line-rail { gap: 1rem; }
+
+  /* Narrow frames push the copy into a full-width band that sits higher than
+     the engine's default scrim reaches, so the skylight behind the skylights
+     washed out the headline. Carry the density further up the frame. */
+  .sc-scrim--band {
+    background: linear-gradient(
+      to top,
+      color-mix(in oklab, var(--sc-canvas) 96%, transparent) 0%,
+      color-mix(in oklab, var(--sc-canvas) 92%, transparent) 40%,
+      color-mix(in oklab, var(--sc-canvas) 66%, transparent) 62%,
+      color-mix(in oklab, var(--sc-canvas) 24%, transparent) 80%,
+      transparent 100%
+    );
+  }
+}
+
+@media (max-width: 560px) {
+  .sde-dieline { display: none; }
+}
+
+}
