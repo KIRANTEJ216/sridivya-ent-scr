@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Clients & Industries: Industries Served and Packaging Case Studies",
+  title: "Industries & Case Studies",
   description:
-    "Ten industries, one factory floor: e-commerce, FMCG, food, pharma, electronics, apparel, furniture, automotive, luxury and export packaging, with case studies and production capacity.",
+    "Packaging for e-commerce, FMCG, pharma, food, electronics, auto and export brands, with case studies and plant capacity. Made in Jeedimetla, Hyderabad.",
   alternates: { canonical: "/clients" },
 };
 

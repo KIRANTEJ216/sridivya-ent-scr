@@ -2,16 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BoxGrid } from "@/components/box-grid";
 import { areaAddress, site } from "@/lib/site";
+import { SITE_URL } from "@/lib/site-url";
 
 const PATH = "/corrugated-box-manufacturers-hyderabad";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sridivyaenterprises.com";
+
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Corrugated Box Manufacturers in Hyderabad & Jeedimetla | Sri Divya Enterprises",
+    absolute: "Corrugated Boxes in Jeedimetla, Hyderabad | Sri Divya",
   },
   description:
-    "Looking for corrugated box manufacturers in Hyderabad? Sri Divya Enterprises makes 3, 5 and 7 ply corrugated boxes, printed cartons and pharma packaging in Jeedimetla. Same-day delivery in Hyderabad.",
+    "3, 5 and 7 ply corrugated boxes, printed cartons and pharma packaging made in Jeedimetla, Hyderabad. Same-day delivery across the city.",
   alternates: { canonical: PATH },
   openGraph: {
     title: "Corrugated Box Manufacturers in Hyderabad & Jeedimetla",

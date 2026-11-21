@@ -75,6 +75,7 @@ export function FactoryFlight() {
     let inflight = 0;
     let dirty = true;
     let disposed = false;
+    let engaged = false;
     let focusLeg = 0;
 
     const nextJob = (): [number, number] | null => {
@@ -88,7 +89,16 @@ export function FactoryFlight() {
       for (const stride of STRIDES) {
         for (const li of order) {
           // Do not fetch fine passes far away from the reader.
-          if (stride < 4 && Math.abs(li - focusLeg) > 1) continue;
+          // Coarse frames only near the reader, fine frames only on the
+          // current leg and the next: the first visit stays around 1 MB and
+          // the rest arrives as the reader actually scrolls.
+          const dist = li - focusLeg;
+          if (stride === 8 && (dist < -1 || dist > 2)) continue;
+          if (stride === 4 && (dist < 0 || dist > 1)) continue;
+          if (stride < 4 && dist !== 0) continue;
+          // Until the visitor scrolls, half-rate frames of the opening leg are
+          // plenty: blending hides the gap and the first visit stays light.
+          if (!engaged && stride === 1) continue;
           const n = LEGS[li].frames;
           for (let f = 0; f < n; f += stride) {
             if (!requested[li].has(f)) return [li, f];
@@ -123,7 +133,31 @@ export function FactoryFlight() {
           .catch(() => done(false));
       }
     };
-    pump();
+
+    // Start fetching only after the page has loaded and painted, so frames
+    // never compete with the HTML, fonts and poster, and never hold the
+    // window load event open.
+    let started = false;
+    const start = () => {
+      if (disposed) return;
+      started = true;
+      pump();
+    };
+    const kick = () => {
+      const ric = (
+        window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }
+      ).requestIdleCallback;
+      if (ric) ric(start, { timeout: 1500 });
+      else setTimeout(start, 300);
+    };
+    if (document.readyState === "complete") kick();
+    else addEventListener("load", kick, { once: true });
+    // Scrolling before load is a clear signal: start at once.
+    const onFirstScroll = () => {
+      engaged = true;
+      start();
+    };
+    addEventListener("scroll", onFirstScroll, { once: true, passive: true });
 
     /** The requested frame, or the nearest one already loaded in that leg. */
     const frameAt = (li: number, f: number): HTMLImageElement | null => {
@@ -245,7 +279,7 @@ export function FactoryFlight() {
       if (li !== lastSeg) {
         lastSeg = li;
         focusLeg = li;
-        pump();
+        if (started) pump();
         dispatchEvent(
           new CustomEvent("sc:waypoint", {
             detail: { index: li, count: LEGS.length, label: LEGS[li].label, progress: local },
@@ -319,6 +353,8 @@ export function FactoryFlight() {
 
     return () => {
       disposed = true;
+      removeEventListener("load", kick);
+      removeEventListener("scroll", onFirstScroll);
       cancelAnimationFrame(raf);
       ro.disconnect();
     };

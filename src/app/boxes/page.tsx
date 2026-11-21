@@ -6,8 +6,9 @@ import { BoxGrid } from "@/components/box-grid";
 import { BOXES, BOX_CATEGORIES, photoSrc, type BoxCategory } from "@/lib/boxes";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { SITE_URL as SITE_URL_ORIGIN } from "@/lib/site-url";
 
-const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sridivyaenterprises.com";
+const base = SITE_URL_ORIGIN;
 
 const itemListJsonLd = {
   "@context": "https://schema.org",

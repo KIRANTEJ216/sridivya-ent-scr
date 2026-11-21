@@ -6,6 +6,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button";
 import { resolvedAddress, resolvedContact, site } from "@/lib/site";
 import { BOXES } from "@/lib/boxes";
 import "@/styles.css";
+import { SITE_URL } from "@/lib/site-url";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -20,16 +21,16 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sridivyaenterprises.com";
+
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${site.name} | Corrugated Box Manufacturer in Jeedimetla, Hyderabad`,
-    template: `%s | ${site.name}`,
+    default: "Corrugated Box Manufacturers in Hyderabad | Sri Divya",
+    template: "%s | Sri Divya Enterprises",
   },
   description:
-    "Corrugated box manufacturer in Jeedimetla, Hyderabad since 2007. Custom printed carton boxes, 3/5/7 ply corrugated boxes, die-cut mailers, pharma cartons, rigid boxes and export packaging. Request a quote.",
+    "Corrugated box manufacturer in Jeedimetla, Hyderabad since 2007. 3, 5 and 7 ply boxes, printed cartons, mailers and pharma packaging. Get a quote.",
   // Not a Google ranking signal, but read by Bing, Yandex and some Indian
   // directories. Kept to terms the visible page actually covers.
   keywords: [
@@ -63,9 +64,9 @@ export const metadata: Metadata = {
     type: "website",
     siteName: site.name,
     locale: "en_IN",
-    title: `${site.name} | Corrugated Box Manufacturer in Jeedimetla, Hyderabad`,
+    title: "Corrugated Box Manufacturers in Hyderabad | Sri Divya Enterprises",
     description:
-      "Walk the factory floor. Custom corrugated, rigid and printed packaging made in Hyderabad: configure a box live, then request a quote.",
+      "Corrugated boxes, printed cartons and rigid packaging made in Jeedimetla, Hyderabad. Build your box in 3D, then request a quote.",
     images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Sri Divya Enterprises: custom corrugated packaging manufacturing in Hyderabad" }],
   },
   twitter: {

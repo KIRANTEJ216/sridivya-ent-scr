@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Request a Quote | Custom Packaging RFQ",
+  title: "Request a Quote for Custom Boxes",
   description:
-    "Send dimensions, flute, print method and artwork for custom corrugated or rigid boxes. Upload dielines and artwork, get a response from the factory floor within one working day.",
+    "Send box size, flute, print and quantity for custom corrugated or rigid boxes. Get a quote from our Jeedimetla factory within one working day.",
   alternates: { canonical: "/quote" },
 };
 
