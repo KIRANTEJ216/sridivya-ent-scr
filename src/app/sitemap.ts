@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 import { BOXES } from "@/lib/boxes";
+import { SITE_URL as SITE_URL_ORIGIN } from "@/lib/site-url";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sridivyaenterprises.com";
+  const base = SITE_URL_ORIGIN;
   const now = new Date();
 
   const routes: MetadataRoute.Sitemap = ["", "/corrugated-box-manufacturers-hyderabad", "/boxes", "/custom", "/clients", "/quote"].map(

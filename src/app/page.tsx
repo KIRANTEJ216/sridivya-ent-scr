@@ -5,11 +5,10 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: {
-    absolute:
-      "Corrugated Box Manufacturers in Hyderabad | Jeedimetla Packaging Company | Sri Divya Enterprises",
+    absolute: "Corrugated Box Manufacturers in Hyderabad | Sri Divya",
   },
   description:
-    "Sri Divya Enterprises, Jeedimetla, Hyderabad: corrugated box manufacturer since 2007. Custom printed carton boxes, 3/5/7 ply boxes, die-cut mailers, pharma cartons and export packaging. Request a quote.",
+    "Corrugated box manufacturer in Jeedimetla, Hyderabad since 2007. 3, 5 and 7 ply boxes, printed cartons, mailers and pharma packaging. Get a quote.",
   alternates: { canonical: "/" },
 };
 

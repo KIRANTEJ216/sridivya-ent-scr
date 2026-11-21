@@ -5,8 +5,9 @@ import Link from "next/link";
 import { BOXES, fluteName, printName, finishName, photoAlt, photoSrc } from "@/lib/boxes";
 import { resolvedAddress, site } from "@/lib/site";
 import { BoxDieline } from "@/components/box-dieline";
+import { SITE_URL as SITE_URL_ORIGIN } from "@/lib/site-url";
 
-const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sridivyaenterprises.com";
+const base = SITE_URL_ORIGIN;
 
 /**
  * One page per box family.
@@ -33,8 +34,10 @@ export async function generateMetadata({
   /* No brand suffix here: the root layout applies `%s | ${site.name}`, so
    * including it produced "... | Sri Divya Enterprises | Sri Divya Enterprises"
    * in every tab and every search result. */
-  const title = `${box.name} Manufacturer in Hyderabad`;
-  const description = `${box.name} in ${box.dimensions.l} x ${box.dimensions.w} x ${box.dimensions.h} mm. ${box.desc} Corrugated ${fluteName(box.flutes[0])} board, ${box.printOptions.length} print methods, MOQ ${box.moq}, ${box.leadTime}. Made in Hyderabad, delivered across Telangana.`;
+  const title = `${box.name} Manufacturer, Hyderabad`;
+  const full = `${box.name}, ${box.dimensions.l} x ${box.dimensions.w} x ${box.dimensions.h} mm, ${fluteName(box.flutes[0])} board, MOQ ${box.moq}. Made in Jeedimetla, Hyderabad, delivered across Telangana.`;
+  // Google shows about 155 characters; cut on a word, never mid-word.
+  const description = full.length <= 158 ? full : `${full.slice(0, 155).replace(/\s+\S*$/, "")}.`;
 
   return {
     title,

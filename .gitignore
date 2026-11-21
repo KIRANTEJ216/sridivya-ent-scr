@@ -60,3 +60,6 @@ next-env.d.ts
 # local tooling state
 /.claude-flow/
 /.claude/
+
+# tool caches anywhere in the tree
+.claude-flow/
