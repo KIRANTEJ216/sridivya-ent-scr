@@ -6,7 +6,13 @@ import {
   ArrowRight, RotateCcw, Package, Ruler, Layers3, Palette, Sparkles,
 } from "lucide-react";
 import { BoxDieline, type Colorway } from "@/components/box-dieline";
-import { Carton3D } from "@/components/carton-3d";
+import dynamic from "next/dynamic";
+
+/* WebGL viewer, client only: three.js never runs on the server. */
+const BoxViewer = dynamic(() => import("@/components/box-viewer/BoxViewer"), {
+  ssr: false,
+  loading: () => <div className="bv__loading">Loading 3D preview…</div>,
+});
 import {
   BOXES, FLUTES, PRINT_METHODS, FINISHES, MATERIAL_GRADES,
   getBox, type FluteId, type PrintMethodId, type FinishId, type MaterialGradeId } from "@/lib/boxes";
@@ -107,14 +113,15 @@ export function Configurator({ initial }: { initial: CustomParams }) {
 
           <div className="showcase-visual !min-h-[380px] lg:!min-h-[560px]">
             {view === "solid" ? (
-              <Carton3D
-                w={previewBox.w}
-                h={previewBox.h}
-                d={previewBox.d}
-                colorway={printColorway[print]}
-                pattern={print === "digital" ? "cmyk-dots" : print === "uv" ? "cyan-glow" : print === "screen" ? "orange-bold" : print === "offset" ? "barcode" : undefined}
-                finish={finish}
+              <BoxViewer
+                type={type}
+                l={l}
+                w={w}
+                h={h}
                 flute={flute}
+                grade={grade}
+                print={print}
+                finish={finish}
                 label={`${current.name}, ${formatMm(l)} by ${formatMm(w)} by ${formatMm(h)}, ${fluteInfo?.name}, ${finishInfo?.name}`}
               />
             ) : (
