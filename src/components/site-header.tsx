@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Menu, X, Package } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { SdeMark } from "@/components/sde-mark";
 import { navLinks, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -75,9 +76,7 @@ export function SiteHeader() {
           className="group flex items-center gap-2.5"
           aria-label={`${site.name} home`}
         >
-          <span className="brand-mark grid size-9 place-items-center rounded-lg corrugated-texture shadow-depth-sm" aria-hidden="true">
-            <Package size={18} className="text-ink-deep" strokeWidth={2.2} />
-          </span>
+          <SdeMark className="brand-mark size-10 shrink-0" />
           <span className="flex flex-col leading-none">
             <span className="font-display text-[0.95rem] font-bold tracking-tight">Sri Divya</span>
             <span className="text-[0.6rem] font-medium uppercase tracking-[0.18em] text-text-dim">

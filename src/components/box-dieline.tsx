@@ -1,6 +1,7 @@
 import { useId, type ReactElement } from "react";
 import type { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
+import { SdeMarkAt } from "@/components/sde-mark";
 import {
   rscGeometry,
   perimeter,
@@ -224,9 +225,7 @@ export function BoxDieline({
               fill={cw.line}
               opacity="0.55"
             >
-              <text fontFamily="ui-monospace, monospace" fontSize="18" letterSpacing="2">
-                SDE
-              </text>
+              <SdeMarkAt x={0} y={-30} size={44} color={cw.line} />
               <rect x="0" y="24" width="120" height="2" />
               <text y="44" fontSize="13" letterSpacing="3">
                 CUSTOM

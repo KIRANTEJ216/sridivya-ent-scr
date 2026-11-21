@@ -3,7 +3,8 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Package, Mail, Phone, MapPin, Clock, ArrowRight, Leaf, BadgeCheck } from "lucide-react";
+import { SdeMark } from "@/components/sde-mark";
+import { Mail, Phone, MapPin, Clock, ArrowRight, Leaf, BadgeCheck } from "lucide-react";
 import { areaAddress, navLinks, resolvedAddress, resolvedCertifications, resolvedContact, site } from "@/lib/site";
 
 type FormState = "idle" | "sending" | "sent" | "error";
@@ -64,9 +65,7 @@ export function SiteFooter() {
         {/* brand + capability */}
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="grid size-9 place-items-center rounded-lg corrugated-texture" aria-hidden="true">
-              <Package size={18} className="text-ink-deep" strokeWidth={2.2} />
-            </span>
+            <SdeMark className="size-10 shrink-0" />
             <div className="leading-none">
               <p className="font-display text-base font-bold">{site.name}</p>
               <p className="text-[0.65rem] uppercase tracking-[0.18em] text-text-dim">{site.tagline}</p>

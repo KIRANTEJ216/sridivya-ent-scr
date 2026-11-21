@@ -96,7 +96,7 @@ const orgJsonLd = {
     "Corrugated box and paper packaging manufacturer in Jeedimetla, Hyderabad, Telangana. RSC boxes, die-cut mailers, telescopic boxes, heavy-duty crates, rigid paper boxes, food cartons and display trays, printed flexo, offset and digital.",
   foundingDate: String(site.established),
   url: SITE_URL,
-  logo: `${SITE_URL}/icon.svg`,
+  logo: `${SITE_URL}/logo.png`,
   image: `${SITE_URL}/og.jpg`,
   ...(resolvedContact.phone ? { telephone: resolvedContact.phone } : {}),
   email: site.contact.email,
