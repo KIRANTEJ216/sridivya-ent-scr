@@ -1,5 +1,6 @@
 import { useId } from "react";
 import { cn } from "@/lib/utils";
+import { SdeMarkAt } from "@/components/sde-mark";
 import { COLORWAYS, type Colorway } from "./box-dieline";
 import type { ShipMark, FinishId, FluteId } from "@/lib/boxes";
 
@@ -198,8 +199,7 @@ function Lockup({
     const textX = cx - W * 0.11;
     return (
       <g fill={color}>
-        <rect x={markX - m / 2} y={cy - m / 2} width={m} height={m} rx={m * 0.22} fill={color} opacity={0.92} />
-        <Glyph x={markX} y={cy} s={m * 0.3} color="var(--color-ink-deep)" />
+        <SdeMarkAt x={markX - m / 2} y={cy - m / 2} size={m} color={color} />
         <text
           x={textX}
           y={cy + H * 0.06}
@@ -251,8 +251,7 @@ function Lockup({
 
   return (
     <g fill={color}>
-      <rect x={cx - m / 2} y={top} width={m} height={m} rx={m * 0.22} fill={color} opacity={0.92} />
-      <Glyph x={cx} y={top + m / 2} s={m * 0.3} color="var(--color-ink-deep)" />
+      <SdeMarkAt x={cx - m / 2} y={top} size={m} color={color} />
       <text
         x={cx}
         y={top + m + gapA + wordSize * 0.76}
@@ -284,23 +283,6 @@ function Lockup({
         fill={color}
         opacity={0.45}
       />
-    </g>
-  );
-}
-
-/** The box glyph inside the mark tile — the same cube the site header uses. */
-function Glyph({ x, y, s, color }: { x: number; y: number; s: number; color: string }) {
-  return (
-    <g
-      stroke={color}
-      strokeWidth={Math.max(0.8, s * 0.17)}
-      strokeLinejoin="round"
-      strokeLinecap="round"
-      fill="none"
-    >
-      <path d={`M ${x} ${y - s} L ${x + s} ${y - s * 0.5} L ${x + s} ${y + s * 0.5} L ${x} ${y + s} L ${x - s} ${y + s * 0.5} L ${x - s} ${y - s * 0.5} Z`} />
-      <path d={`M ${x - s} ${y - s * 0.5} L ${x} ${y} L ${x + s} ${y - s * 0.5}`} />
-      <path d={`M ${x} ${y} L ${x} ${y + s}`} />
     </g>
   );
 }

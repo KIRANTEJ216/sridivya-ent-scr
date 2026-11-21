@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { drawSdeMark } from "@/lib/sde-mark";
 import type { FinishId, MaterialGradeId, PrintMethodId } from "@/lib/boxes";
 
 /* Seeded RNG, so the same spec always produces the same board. */
@@ -117,37 +118,9 @@ type ArtStyle = {
   marks: string | null; // handling-mark colour
 };
 
-function drawLogo(ctx: CanvasRenderingContext2D, x: number, y: number, s: number, color: string, onlyMask = false) {
-  // rounded square badge with an isometric carton glyph
-  ctx.save();
-  ctx.strokeStyle = color;
-  ctx.fillStyle = color;
-  ctx.lineWidth = s * 0.07;
-  const r = s * 0.18;
-  ctx.beginPath();
-  ctx.roundRect(x, y, s, s, r);
-  if (onlyMask) ctx.fill();
-  else ctx.stroke();
-  const cx = x + s / 2;
-  const cy = y + s / 2;
-  const k = s * 0.26;
-  ctx.lineJoin = "round";
-  ctx.strokeStyle = onlyMask ? "#000" : color;
-  ctx.beginPath();
-  ctx.moveTo(cx, cy - k);
-  ctx.lineTo(cx + k, cy - k / 2);
-  ctx.lineTo(cx + k, cy + k / 2);
-  ctx.lineTo(cx, cy + k);
-  ctx.lineTo(cx - k, cy + k / 2);
-  ctx.lineTo(cx - k, cy - k / 2);
-  ctx.closePath();
-  ctx.moveTo(cx - k, cy - k / 2);
-  ctx.lineTo(cx, cy);
-  ctx.lineTo(cx + k, cy - k / 2);
-  ctx.moveTo(cx, cy);
-  ctx.lineTo(cx, cy + k);
-  ctx.stroke();
-  ctx.restore();
+function drawLogo(ctx: CanvasRenderingContext2D, x: number, y: number, s: number, color: string) {
+  // the SDE cube mark, printed in a single ink like a flexo plate would
+  drawSdeMark(ctx, x, y, s, color);
 }
 
 function drawWordmark(
@@ -164,7 +137,7 @@ function drawWordmark(
   const tw = ctx.measureText(word).width;
   const total = logo + s * 0.35 + tw;
   const x0 = cx - total / 2;
-  drawLogo(ctx, x0, cy - logo / 2, logo, mask ? "#fff" : style.ink, mask);
+  drawLogo(ctx, x0, cy - logo / 2, logo, mask ? "#fff" : style.ink);
   ctx.fillStyle = mask ? "#fff" : style.ink;
   ctx.textBaseline = "alphabetic";
   ctx.fillText(word, x0 + logo + s * 0.35, cy + s * 0.12);
